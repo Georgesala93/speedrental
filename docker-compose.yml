@@ -1,0 +1,109 @@
+
+# Docker Compose para el proyecto speedrental
+# Levanta: MySQL, Eureka Server, API Gateway, Vehículos y Operaciones
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: speedrental-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: speedrental
+      MYSQL_USER: sruser
+      MYSQL_PASSWORD: srpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal_net
+
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: speedrental-eureka
+    restart: unless-stopped
+    ports:
+      - "8761:8761"
+    depends_on:
+      - mysql
+    networks:
+      - internal_net
+    environment:
+      # No es necesario que Eureka se registre a sí mismo; la configuración del servicio debe manejarlo
+      SPRING_PROFILES_ACTIVE: default
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: speedrental-gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+    networks:
+      - internal_net
+    environment:
+      # Indicar a la aplicación dónde encontrar Eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+
+  vehiculos-service:
+    build:
+      context: ./vehiculos-service
+      dockerfile: Dockerfile
+    container_name: speedrental-vehiculos
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - eureka-server
+    networks:
+      - internal_net
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/speedrental?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: sruser
+      SPRING_DATASOURCE_PASSWORD: srpass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+
+  operaciones-service:
+    build:
+      context: ./operaciones-service
+      dockerfile: Dockerfile
+    container_name: speedrental-operaciones
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - eureka-server
+    networks:
+      - internal_net
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/speedrental?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: sruser
+      SPRING_DATASOURCE_PASSWORD: srpass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  internal_net:
+    driver: bridge
+
+# Nota:
+# - Las aplicaciones Spring Boot deben usar las variables de entorno definidas arriba,
+#   o bien leerlas mediante sustitución con ${...} según su configuración.
+# - Cada servicio espera encontrar un Dockerfile en su respectiva carpeta (./eureka-server, ./api-gateway, ./vehiculos-service, ./operaciones-service).
+# - Las credenciales de la base de datos están definidas en este archivo (MYSQL_ROOT_PASSWORD, MYSQL_USER, MYSQL_PASSWORD).

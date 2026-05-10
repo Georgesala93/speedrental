@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+        routes:
+          # Mantener el prefijo /api en los paths para que los microservicios reciban exactamente
+          # las rutas definidas en las especificaciones (/api/vehiculos, /api/operaciones).
+          # No aplicamos StripPrefix aquí para evitar desajustes con los controladores.
+          - id: vehiculos-service
+            uri: lb://vehiculos-service
+            predicates:
+              - Path=/api/vehiculos/**
+          - id: operaciones-service
+            uri: lb://operaciones-service
+            predicates:
+              - Path=/api/operaciones/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+

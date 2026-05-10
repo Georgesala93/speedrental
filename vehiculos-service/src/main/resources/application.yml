@@ -1,0 +1,45 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: vehiculos-service
+  datasource:
+    url: jdbc:mysql://mysql:3306/speedrental?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: sruser
+    password: srpass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+# Springdoc OpenAPI configuration (optional)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+
+# Notes:
+# - Las credenciales coinciden con las definidas en docker-compose.yml (mysql service).
+# - `ddl-auto: update` es conveniente en desarrollo; en producción usa `validate` o migraciones (Flyway/Liquibase).
+

@@ -1,0 +1,51 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: operaciones-service
+  datasource:
+    url: jdbc:mysql://mysql:3306/speedrental?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: sruser
+    password: srpass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+
+# Notas:
+# - Este servicio usa OpenFeign para comunicarse con `vehiculos-service`.
+# - Asegúrate de definir interfaces Feign en el paquete `com.unir.operaciones.client` y
+#   habilitar @EnableFeignClients en la clase principal de la aplicación.
+

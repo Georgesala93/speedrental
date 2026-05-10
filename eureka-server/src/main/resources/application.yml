@@ -1,0 +1,24 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    # No registrar el propio servidor Eureka en el cluster
+    register-with-eureka: false
+    # No buscar registro al arrancar (Eureka Server no necesita consultar a otros)
+    fetch-registry: false
+
+# Opcional: exponer endpoints de actuator para chequear salud
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
