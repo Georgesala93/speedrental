@@ -36,7 +36,7 @@ management:
 
 springdoc:
   api-docs:
-    path: /v3/api-docs
+    path: /api/operaciones/v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
 
@@ -48,4 +48,3 @@ logging:
 # - Este servicio usa OpenFeign para comunicarse con `vehiculos-service`.
 # - Asegúrate de definir interfaces Feign en el paquete `com.unir.operaciones.client` y
 #   habilitar @EnableFeignClients en la clase principal de la aplicación.
-

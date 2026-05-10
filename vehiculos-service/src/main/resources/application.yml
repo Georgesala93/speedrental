@@ -27,10 +27,10 @@ management:
       exposure:
         include: health,info,metrics
 
-# Springdoc OpenAPI configuration (optional)
+# Springdoc OpenAPI configuration
 springdoc:
   api-docs:
-    path: /v3/api-docs
+    path: /api/vehiculos/v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
 
@@ -42,4 +42,3 @@ logging:
 # Notes:
 # - Las credenciales coinciden con las definidas en docker-compose.yml (mysql service).
 # - `ddl-auto: update` es conveniente en desarrollo; en producción usa `validate` o migraciones (Flyway/Liquibase).
-

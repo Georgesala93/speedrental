@@ -45,6 +45,6 @@ docker-compose up -d --build
 
 - **Dashboard de Eureka:** `http://localhost:8761`
 - **Documentación de API (Swagger UI):** La documentación técnica de las APIs REST se expone de manera centralizada en el API Gateway y también de forma independiente en cada microservicio.
-    - **Documentación Centralizada:** `http://localhost:8080/swagger-ui.html`
+    - **Documentación Centralizada:** `http://localhost:8080/webjars/swagger-ui/index.html?urls.primaryName=vehiculos-service`
     - **API de Vehículos (Individual):** `http://localhost:8081/swagger-ui/index.html`
     - **API de Operaciones (Individual):** `http://localhost:8082/swagger-ui/index.html`
