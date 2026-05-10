@@ -13,4 +13,3 @@ public class OperacionesServiceApplication {
         SpringApplication.run(OperacionesServiceApplication.class, args);
     }
 }
-
