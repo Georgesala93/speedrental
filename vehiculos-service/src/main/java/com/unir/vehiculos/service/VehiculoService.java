@@ -24,4 +24,3 @@ public interface VehiculoService {
 
     List<Vehiculo> findByEstado(Estado estado);
 }
-

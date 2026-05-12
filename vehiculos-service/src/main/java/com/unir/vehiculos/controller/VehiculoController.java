@@ -117,4 +117,3 @@ public class VehiculoController {
         return ResponseEntity.ok(service.findByEstado(estado));
     }
 }
-

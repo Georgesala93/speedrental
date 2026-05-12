@@ -2,11 +2,13 @@ package com.unir.operaciones;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * Clase principal de la aplicación operaciones-service.
  */
 @SpringBootApplication
+@EnableFeignClients
 public class OperacionesServiceApplication {
 
     public static void main(String[] args) {

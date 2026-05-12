@@ -66,6 +66,13 @@
             <version>1.6.14</version>
         </dependency>
 
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Actuator (optional but helpful) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -98,4 +105,3 @@
     </build>
 
 </project>
-

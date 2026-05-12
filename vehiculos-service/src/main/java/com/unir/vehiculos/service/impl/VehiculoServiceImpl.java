@@ -70,4 +70,3 @@ public class VehiculoServiceImpl implements VehiculoService {
         return repository.findByEstado(estado);
     }
 }
-
